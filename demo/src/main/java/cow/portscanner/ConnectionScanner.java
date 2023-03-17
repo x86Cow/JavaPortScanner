@@ -9,6 +9,7 @@ public class ConnectionScanner implements Runnable {
    private int startingPort;
    private int endingPort;
    private int timeout;
+   private Thread thread;
    /**
     * 
     * @param ip
@@ -21,7 +22,6 @@ public class ConnectionScanner implements Runnable {
       this.timeout = timeout;
    }
 
-   Thread thread;
    /**
     * 
     * @param ip
