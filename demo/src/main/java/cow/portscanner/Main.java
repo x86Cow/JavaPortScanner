@@ -1,6 +1,7 @@
 package cow.portscanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alexander Lorei
@@ -35,7 +36,12 @@ public class Main {
         System.out.println(data);
     }
 
-    private static boolean portsAreAllDone(ArrayList<ConnectionScanner> sc){
+    /**
+     * checks if all the scanners in a given list
+     * @param sc - the list of scanners to check
+     * @return {@code true} if the ports are done scanning, {@code false} otherwise
+     */
+    private static boolean portsAreAllDone(List<ConnectionScanner> sc){
         for(ConnectionScanner s : sc)
             if(!s.isDoneScanning())
                 return false;

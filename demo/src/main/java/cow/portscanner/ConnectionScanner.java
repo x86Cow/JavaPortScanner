@@ -3,6 +3,7 @@ package cow.portscanner;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectionScanner implements Runnable {
 
@@ -12,7 +13,7 @@ public class ConnectionScanner implements Runnable {
    private int timeout;
    private Thread thread;
    private ArrayList<String> portData;
-   private boolean done;
+   private volatile boolean done;
    /**
     * 
     * @param ip
@@ -80,10 +81,14 @@ public class ConnectionScanner implements Runnable {
     * returns a list of all the ports the were found
     * @return
     */
-   public ArrayList<String> getPortDataList(){
+   public List<String> getPortDataList(){
       return portData;
    }
 
+   /**
+    * returns whether the scanner is done scanning
+    * @return if the scanner is done
+    */
    public boolean isDoneScanning(){
       return done;
    }
