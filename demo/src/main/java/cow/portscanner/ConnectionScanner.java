@@ -2,6 +2,7 @@ package cow.portscanner;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ConnectionScanner implements Runnable {
 
@@ -9,19 +10,23 @@ public class ConnectionScanner implements Runnable {
    private int startingPort;
    private int endingPort;
    private int timeout;
+   private Thread thread;
+   private ArrayList<String> portData;
+   private boolean done;
    /**
     * 
     * @param ip
     * @param timeout
     */
    public ConnectionScanner(String ip, int startingPort, int endingPort, int timeout) {
+      portData = new ArrayList<String>();
+      done = false;
       this.ip = ip;
       this.startingPort = startingPort;
       this.endingPort = endingPort;
       this.timeout = timeout;
    }
 
-   Thread thread;
    /**
     * 
     * @param ip
@@ -50,10 +55,36 @@ public class ConnectionScanner implements Runnable {
    public void run() {
       for(int p = startingPort; p < endingPort; p++) {
          try {
-            scanner(ip, p, timeout);
+            if(scanner(ip, p, timeout)){
+               //port was found
+               portData.add("[" + String.valueOf(p) + "]");
+            }
          } catch (Exception e) {
             continue;
          }
       }
+      done = true;
+   }
+
+   /**
+    * Returns the port data as a string, using the {@code ArrayList.toString()} method
+    * @return the data as a string
+    */
+   public String getPortData(){
+      if(portData.isEmpty())
+         return "";
+      return portData.toString();
+   }
+
+   /**
+    * returns a list of all the ports the were found
+    * @return
+    */
+   public ArrayList<String> getPortDataList(){
+      return portData;
+   }
+
+   public boolean isDoneScanning(){
+      return done;
    }
 }
